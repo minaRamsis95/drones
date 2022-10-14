@@ -1,10 +1,7 @@
 ## Drones
 
-[[_TOC_]]
-
 ---
-
-:scroll: **START**
+ **START**
 
 ### Introduction
 
@@ -68,5 +65,5 @@ While implementing your solution **please take care of the following requirement
 
 ---
 
-:scroll: **END** 
+**END** 
 
