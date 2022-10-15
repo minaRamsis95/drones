@@ -2,6 +2,7 @@ package com.mina.drones.services;
 
 import com.mina.drones.models.db.Drone;
 import com.mina.drones.models.dro.DroneDro;
+import com.mina.drones.models.dto.DroneDto;
 import com.mina.drones.repositories.DronesRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,9 @@ public class DronesService {
         this.modelMapper = modelMapper;
     }
 
-    public Mono<Drone> registerDrone(DroneDro drone) {
-        return dronesRepository.save(modelMapper.map(drone, Drone.class));
+    public Mono<DroneDto> registerDrone(DroneDro drone) {
+        return dronesRepository
+                .save(modelMapper.map(drone, Drone.class))
+                .map(d -> modelMapper.map(d,DroneDto.class));
     }
 }

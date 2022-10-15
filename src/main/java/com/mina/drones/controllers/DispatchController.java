@@ -3,6 +3,7 @@ package com.mina.drones.controllers;
 import com.mina.drones.config.ErrorMessages;
 import com.mina.drones.models.db.Drone;
 import com.mina.drones.models.dro.DroneDro;
+import com.mina.drones.models.dto.DroneDto;
 import com.mina.drones.services.DronesService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class DispatchController {
     }
 
     @PostMapping
-    public Mono<Drone> registerDrone(@RequestBody @Valid DroneDro drone){
+    public Mono<DroneDto> registerDrone(@RequestBody @Valid DroneDro drone){
         return dronesService.registerDrone(drone);
     }
 }
