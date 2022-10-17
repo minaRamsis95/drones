@@ -42,8 +42,8 @@ public class DispatchController {
     }
 
     @PostMapping("/loadMedication")
-    public Mono<String> loadMedication(@RequestParam String droneSerialNumber, @RequestParam String medicationCode) {
-        return Mono.just("");
+    public Mono<DroneDto> loadMedication(@RequestParam String droneSerialNumber, @RequestParam String medicationCode) {
+        return dronesService.loadDrone(droneSerialNumber,medicationCode);
     }
 
     @GetMapping("/checkLoadedMedications")
@@ -55,8 +55,8 @@ public class DispatchController {
     }
 
     @GetMapping("/checkAvailableDrones")
-    public Flux<DroneDro> checkAvailableDrones() {
-        return Flux.just(null);
+    public Flux<DroneDto> checkAvailableDrones() {
+        return dronesService.findAvailableDrones();
     }
 
     @GetMapping("/checkBatteryLevel")

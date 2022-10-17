@@ -20,5 +20,4 @@ public class DroneDro {
     @Max(value = 500,message = "Maximum weight limit is 500gr")
     @NotNull
     private Integer weightLimit;
-    private List<String> loadedMedicationsCodes = new ArrayList<>();
 }

@@ -9,6 +9,7 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,8 @@ public class Drone {
     @Indexed(unique = true)
     private String serialNumber;
     private DroneModel model;
-    private Integer weightLimit;
+    private Float weightLimit;
+    private Float remainingWeight;
     private float batteryPercentage = 0f;
     private DroneState state;
     private List<String> loadedMedicationsCodes = new ArrayList<>();
