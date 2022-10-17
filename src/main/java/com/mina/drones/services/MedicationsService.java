@@ -1,10 +1,13 @@
 package com.mina.drones.services;
 
 import com.mina.drones.models.db.Drone;
+import com.mina.drones.models.db.Medication;
 import com.mina.drones.models.dro.DroneDro;
+import com.mina.drones.models.dto.MedicationDto;
 import com.mina.drones.repositories.MedicationsRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -17,5 +20,11 @@ public class MedicationsService {
     public MedicationsService(MedicationsRepository medicationsRepository, ModelMapper modelMapper) {
         this.medicationsRepository = medicationsRepository;
         this.modelMapper = modelMapper;
+    }
+
+    @Cacheable
+    public Mono<MedicationDto> findByCode(String code) {
+        return medicationsRepository.findMedicationByCode(code)
+                .map(medication -> modelMapper.map(medication, MedicationDto.class));
     }
 }

@@ -23,6 +23,10 @@ public class DronesService {
     public Mono<DroneDto> registerDrone(DroneDro drone) {
         return dronesRepository
                 .save(modelMapper.map(drone, Drone.class))
-                .map(d -> modelMapper.map(d,DroneDto.class));
+                .map(d -> modelMapper.map(d, DroneDto.class));
+    }
+
+    public Mono<Drone> findBySerialNumber(String serialNumber) {
+        return dronesRepository.findDroneBySerialNumber(serialNumber);
     }
 }
