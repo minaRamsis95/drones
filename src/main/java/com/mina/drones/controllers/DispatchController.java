@@ -41,27 +41,28 @@ public class DispatchController {
         return dronesService.registerDrone(drone);
     }
 
-    @PostMapping("/loadMedication")
-    public Mono<DroneDto> loadMedication(@RequestParam String droneSerialNumber, @RequestParam String medicationCode) {
+    @PostMapping("/{droneSerialNumber}/loadMedication")
+    public Mono<DroneDto> loadMedication(@PathVariable String droneSerialNumber, @RequestParam String medicationCode) {
         return dronesService.loadDrone(droneSerialNumber,medicationCode);
     }
 
-    @GetMapping("/checkLoadedMedications")
-    public Flux<Mono<MedicationDto>> checkLoadedMedications(@RequestParam String droneSerialNumber) {
+    @GetMapping("/{droneSerialNumber}/loadedMedications")
+    public Flux<MedicationDto> checkLoadedMedications(@PathVariable String droneSerialNumber) {
         return dronesService.findBySerialNumber(droneSerialNumber)
                 .map(Drone::getLoadedMedicationsCodes)
                 .flatMapMany(Flux::fromIterable)
-                .map(code -> medicationsService.findByCode(code));
+                .flatMap(code -> medicationsService.findByCode(code));
     }
 
-    @GetMapping("/checkAvailableDrones")
+    @GetMapping("/available")
     public Flux<DroneDto> checkAvailableDrones() {
         return dronesService.findAvailableDrones();
     }
 
-    @GetMapping("/checkBatteryLevel")
-    public Mono<Float> checkBatteryLevel(@RequestParam String droneSerialNumber) {
+    @GetMapping("/{droneSerialNumber}/batteryLevel")
+    public Mono<Float> checkBatteryLevel(@PathVariable String droneSerialNumber) {
         return dronesService.findBySerialNumber(droneSerialNumber)
                 .map(Drone::getBatteryPercentage);
     }
+
 }
