@@ -65,4 +65,35 @@ public class DronesService {
         return drone.getRemainingWeight() >= med.getWeight() && drone.getBatteryPercentage() >= minimumLoadingBatteryPercentage && drone.getState() == DroneState.IDLE;
     }
 
+    public Mono<DroneDto> updateBatteryLevel(String serialNumber, Float batteryLevel) {
+        return dronesRepository.findDroneBySerialNumber(serialNumber)
+                .map(drone -> {
+                    drone.setBatteryPercentage(batteryLevel);
+                    return drone;
+                })
+                .flatMap(d -> dronesRepository.save(d))
+                .map(d -> modelMapper.map(d, DroneDto.class));
+    }
+
+    public Mono<DroneDto> updateState(String serialNumber, DroneState state) {
+        return dronesRepository.findDroneBySerialNumber(serialNumber)
+                .map(drone -> {
+                    drone.setState(state);
+                    return drone;
+                })
+                .flatMap(d -> dronesRepository.save(d))
+                .map(d -> modelMapper.map(d, DroneDto.class));
+    }
+
+    public Mono<DroneDto> finishDelivery(String droneSerialNumber) {
+        return dronesRepository.findDroneBySerialNumber(droneSerialNumber)
+                .map(drone -> {
+                    drone.setState(DroneState.IDLE);
+                    drone.setRemainingWeight(drone.getWeightLimit());
+                    drone.getLoadedMedicationsCodes().clear();
+                    return drone;
+                })
+                .flatMap(d -> dronesRepository.save(d))
+                .map(d -> modelMapper.map(d, DroneDto.class));
+    }
 }

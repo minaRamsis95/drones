@@ -1,6 +1,7 @@
 package com.mina.drones.controllers;
 
 import com.mina.drones.config.ErrorMessages;
+import com.mina.drones.models.DroneState;
 import com.mina.drones.models.db.Drone;
 import com.mina.drones.models.dro.DroneDro;
 import com.mina.drones.models.dto.DroneDto;
@@ -41,7 +42,7 @@ public class DispatchController {
         return dronesService.registerDrone(drone);
     }
 
-    @PostMapping("/{droneSerialNumber}/loadMedication")
+    @PutMapping("/{droneSerialNumber}/loadMedication")
     public Mono<DroneDto> loadMedication(@PathVariable String droneSerialNumber, @RequestParam String medicationCode) {
         return dronesService.loadDrone(droneSerialNumber,medicationCode);
     }
@@ -63,6 +64,23 @@ public class DispatchController {
     public Mono<Float> checkBatteryLevel(@PathVariable String droneSerialNumber) {
         return dronesService.findBySerialNumber(droneSerialNumber)
                 .map(Drone::getBatteryPercentage);
+    }
+
+    @PutMapping("/{droneSerialNumber}/batteryLevel")
+    public Mono<Float> updateBatteryLevel(@PathVariable String droneSerialNumber,@RequestParam Float batteryLevel) {
+        return dronesService.updateBatteryLevel(droneSerialNumber,batteryLevel)
+                .map(DroneDto::getBatteryPercentage);
+    }
+
+    @PutMapping("/{droneSerialNumber}/state")
+    public Mono<DroneState> updateState(@PathVariable String droneSerialNumber, @RequestParam DroneState state) {
+        return dronesService.updateState(droneSerialNumber,state)
+                .map(DroneDto::getState);
+    }
+
+    @PutMapping("/{droneSerialNumber}/finishDelivery")
+    public Mono<DroneDto> finishDelivery(@PathVariable String droneSerialNumber) {
+        return dronesService.finishDelivery(droneSerialNumber);
     }
 
 }
