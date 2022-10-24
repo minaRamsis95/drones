@@ -20,5 +20,12 @@ migrations:
       weightLimit: 200
       remainingWeight: 200
       state: IDLE
-#  medications:
-#    -
+  medications:
+    - name : Panadol
+      weight: 10
+      code: PANADOL
+      imageUrl: ${server.address:localhost}:${server.port:8080}/images/medication.jpg
+    - name: Panadol_Extra
+      weight: 10
+      code: PANADOL_EXTRA
+      imageUrl: ${server.address:localhost}:${server.port:8080}/images/medication.jpg

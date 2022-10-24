@@ -15,8 +15,8 @@ public class DBInit {
         dronesRepository.saveAll(migrationDataProvider.getMigrationData().getDrones()).blockLast();
     }
 
-//    @ChangeSet(order = "001", id = "initMedications", author = "system")
-//    public void initMedications(MigrationDataProvider migrationDataProvider, MedicationsRepository medicationsRepository) {
-//        medicationsRepository.saveAll(migrationDataProvider.getMigrationData().getMedications()).blockLast();
-//    }
+    @ChangeSet(order = "001", id = "initMedications", author = "system")
+    public void initMedications(MigrationDataProvider migrationDataProvider, MedicationsRepository medicationsRepository) {
+        medicationsRepository.saveAll(migrationDataProvider.getMigrationData().getMedications()).blockLast();
+    }
 }
