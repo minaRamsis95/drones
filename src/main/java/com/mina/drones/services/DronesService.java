@@ -54,6 +54,7 @@ public class DronesService {
                             if (couldBeLoaded(drone, medication)) {
                                 drone.getLoadedMedicationsCodes().add(medicationCode);
                                 drone.setRemainingWeight(drone.getRemainingWeight() - medication.getWeight());
+                                drone.setState(DroneState.LOADING);
                             }
                             return drone;
                         }
