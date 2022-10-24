@@ -1,0 +1,24 @@
+migrations:
+  drones:
+    - serialNumber: 123456
+      model: LIGHTWEIGHT
+      weightLimit: 50
+      remainingWeight: 50
+      state: IDLE
+    - serialNumber: 123457
+      model: MIDDLEWEIGHT
+      weightLimit: 100
+      remainingWeight: 100
+      state: IDLE
+    - serialNumber: 123458
+      model: CRUISERWEIGHT
+      weightLimit: 150
+      remainingWeight: 150
+      state: IDLE
+    - serialNumber: 123459
+      model: HEAVYWEIGHT
+      weightLimit: 200
+      remainingWeight: 200
+      state: IDLE
+#  medications:
+#    -
