@@ -7,5 +7,5 @@ import reactor.core.publisher.Mono;
 
 @Repository
 public interface MedicationsRepository extends ReactiveMongoRepository<Medication, String> {
-    Mono<Medication> findMedicationByCode(String code);
+    Mono<Medication> findByCode(String code);
 }

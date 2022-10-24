@@ -4,6 +4,7 @@ import com.mina.drones.models.DroneState;
 import com.mina.drones.models.db.Drone;
 import com.mina.drones.models.dro.DroneDro;
 import com.mina.drones.models.dto.DroneDto;
+import com.mina.drones.models.dto.MedicationDto;
 import com.mina.drones.repositories.DronesRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,16 +45,24 @@ public class DronesService {
     }
 
     public Mono<DroneDto> loadDrone(String serialNumber, String medicationCode) {
-        return dronesRepository.findDroneBySerialNumber(serialNumber)
-                .doOnNext(drone -> medicationsService.findByCode(medicationCode)
-                        .doOnNext(med -> {
-                            if (drone.getRemainingWeight() >= med.getWeight() && drone.getBatteryPercentage() >= minimumLoadingBatteryPercentage && drone.getState() == DroneState.IDLE) {
+        Mono<Drone> droneMono = dronesRepository.findDroneBySerialNumber(serialNumber);
+        Mono<MedicationDto> medicationMono = medicationsService.findByCode(medicationCode);
+        return droneMono.zipWith(medicationMono).map(
+                        zipped -> {
+                            Drone drone = zipped.getT1();
+                            MedicationDto medication = zipped.getT2();
+                            if (couldBeLoaded(drone, medication)) {
                                 drone.getLoadedMedicationsCodes().add(medicationCode);
-                                drone.setRemainingWeight(drone.getRemainingWeight() - med.getWeight());
+                                drone.setRemainingWeight(drone.getRemainingWeight() - medication.getWeight());
                             }
-                        })
-                ).doOnNext(drone -> dronesRepository.save(drone))
+                            return drone;
+                        }
+                ).flatMap(d -> dronesRepository.save(d))
                 .map(d -> modelMapper.map(d, DroneDto.class));
+    }
+
+    private boolean couldBeLoaded(Drone drone, MedicationDto med) {
+        return drone.getRemainingWeight() >= med.getWeight() && drone.getBatteryPercentage() >= minimumLoadingBatteryPercentage && drone.getState() == DroneState.IDLE;
     }
 
 }

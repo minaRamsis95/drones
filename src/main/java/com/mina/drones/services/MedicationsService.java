@@ -1,8 +1,5 @@
 package com.mina.drones.services;
 
-import com.mina.drones.models.db.Drone;
-import com.mina.drones.models.db.Medication;
-import com.mina.drones.models.dro.DroneDro;
 import com.mina.drones.models.dto.MedicationDto;
 import com.mina.drones.repositories.MedicationsRepository;
 import org.modelmapper.ModelMapper;
@@ -24,7 +21,7 @@ public class MedicationsService {
 
     @Cacheable
     public Mono<MedicationDto> findByCode(String code) {
-        return medicationsRepository.findMedicationByCode(code)
+        return medicationsRepository.findByCode(code)
                 .map(medication -> modelMapper.map(medication, MedicationDto.class));
     }
 }
